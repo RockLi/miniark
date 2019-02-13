@@ -1,0 +1,4 @@
+package: github.com/rockl2e/miniark
+import:
+- package: github.com/minio/minio-go
+  version: ~6.0.16
