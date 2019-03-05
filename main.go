@@ -251,7 +251,7 @@ func copyFile(src, dst string) error {
 
 	_, err = os.Stat(dst)
 	if err == nil {
-		return fmt.Errorf("file %s already exists", dst)
+		fmt.Printf("file %s already exists, will override automatically ...\n", dst)
 	}
 
 	destination, err := os.Create(dst)
@@ -357,7 +357,10 @@ func startMinikube() {
 func installK8SCli() {
 	file := fmt.Sprintf("%s/k8s/%s/kubectl", getMiniArkCacheHome(), k8sVersion)
 	dstFile := "/usr/local/bin/kubectl"
-	copyFile(file, dstFile)
+	if err := copyFile(file, dstFile); err != nil {
+		panic(err)
+		panic("failed to copy kubectl")
+	}
 
 	os.Chmod(dstFile, 0754)
 }
@@ -368,10 +371,6 @@ func installMinikube() {
 	copyFile(minikubeFile, dstFile)
 
 	os.Chmod(dstFile, 0754)
-}
-
-func installArkCli() {
-	// install ark-cli
 }
 
 func installHelmCli() {
@@ -406,13 +405,13 @@ func enableMinikubeAddons() error {
 func main() {
 	log.Printf("miniark: %s, kubernetes: %s, minikube: %s\n", miniArkVersion, k8sVersion, minikubeVersion)
 
-	prepareWorkspace()
+	// prepareWorkspace()
 
-	downloadFiles()
+	// downloadFiles()
 
-	prepareMinikube()
-	installMinikube()
-	startMinikube()
+	// prepareMinikube()
+	// installMinikube()
+	// startMinikube()
 
 	installK8SCli()
 
