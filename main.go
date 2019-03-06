@@ -20,6 +20,7 @@ const (
 	miniArkVersion  = "v1.0"
 	minikubeVersion = "v0.32.0"
 	k8sVersion      = "v1.12.4"
+	helmVersion     = "v2.12.3"
 )
 
 const (
@@ -200,6 +201,11 @@ func downloadFiles() {
 	localFile = fmt.Sprintf("%s/k8s/%s/core-images.tar.gz", getMiniArkCacheHome(), k8sVersion)
 	downloadFromMinio(key, localFile)
 
+	// Download helm
+	key = fmt.Sprintf("%s/k8s/helm-%s.iso", getMinioHome(), helmVersion)
+	localFile = fmt.Sprintf("%s/k8s/helm-%s.iso", getMiniArkCacheHome(), helmVersion)
+	downloadFromMinio(key, localFile)
+
 }
 
 func prepareWorkspace() {
@@ -323,7 +329,8 @@ func prepareMinikube() {
 	{
 		"WantReportError": true,
 		"cache": {
-		"gcr.io/k8s-minikube/storage-provisioner:v1.8.1": null,
+			"gcr.io/k8s-minikube/storage-provisioner:v1.8.1": null,
+			"gcr.io/kubernetes-helm/tiller:v2.12.3": null,
 			"k8s.gcr.io/coredns:1.2.2": null,
 			"k8s.gcr.io/etcd:3.2.24": null,
 			"k8s.gcr.io/kube-addon-manager:v8.6": null,
@@ -334,7 +341,6 @@ func prepareMinikube() {
 			"k8s.gcr.io/kubernetes-dashboard-amd64_v1.10.1": null,
 			"k8s.gcr.io/pause:3.1": null
 		}
-	
 	}
 	`
 
@@ -358,7 +364,6 @@ func installK8SCli() {
 	file := fmt.Sprintf("%s/k8s/%s/kubectl", getMiniArkCacheHome(), k8sVersion)
 	dstFile := "/usr/local/bin/kubectl"
 	if err := copyFile(file, dstFile); err != nil {
-		panic(err)
 		panic("failed to copy kubectl")
 	}
 
@@ -374,6 +379,19 @@ func installMinikube() {
 }
 
 func installHelmCli() {
+	helmFile := fmt.Sprintf("%s/k8s/helm-%s", getMiniArkCacheHome(), helmVersion)
+	dstFile := "/usr/local/bin/helm"
+	copyFile(helmFile, dstFile)
+
+	os.Chmod(dstFile, 0754)
+
+	fmt.Printf("Begin to init Helm environment...\n")
+
+	cmd := exec.Command("helm", "init")
+	err := cmd.Run()
+	if err != nil {
+		fmt.Printf("Faild to init the helm environment, you can manually fix it\n")
+	}
 }
 
 func enableMinikubeAddon(addon string) error {
@@ -405,15 +423,17 @@ func enableMinikubeAddons() error {
 func main() {
 	log.Printf("miniark: %s, kubernetes: %s, minikube: %s\n", miniArkVersion, k8sVersion, minikubeVersion)
 
-	// prepareWorkspace()
+	prepareWorkspace()
 
-	// downloadFiles()
+	downloadFiles()
 
-	// prepareMinikube()
-	// installMinikube()
-	// startMinikube()
+	prepareMinikube()
+	installMinikube()
+	startMinikube()
 
 	installK8SCli()
+
+	installHelmCli()
 
 	// if err := enableMinikubeAddons(); err != nil {
 	// 	log.Fatal(err)
