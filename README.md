@@ -37,8 +37,8 @@ Normally we will use the last stable version of k8s.
 
 ### Download binary 
 
-1. Follow the [URL](https://minio.longguikeji.com/ark/v1.0/miniark-osx) to download the `miniark` binary
-2. `chmod +x miniark-osx`
+1. Follow the [URL]([https://minio.longguikeji.com/ark/v1.0/miniark-osx](https://github.com/rockl2e/miniark/releases/download/v1.0.0/miniark)) to download the `miniark` binary
+2. `chmod +x miniark`
 3. move the `miniark` binary to your PATH and rename to `miniark`
 
 We support both online and offline installation.
