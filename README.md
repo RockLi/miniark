@@ -1,8 +1,8 @@
 # Miniark
 
-Miniark is an (offline) k8s installer supposed to quickly setup local dev k8s environment.
+Miniark is an (offline) k8s MacOSX installer to quickly setup local dev k8s environment.
 
-For the full featured cluster version, we will opensource in the future.
+For full featured cluster version, we will opensource it in the future.
 
 ## Background
 
@@ -15,7 +15,6 @@ For the full featured cluster version, we will opensource in the future.
 2. kubernetes: v1.12.4
 3. helm: v2.12.3
 
-Normally we will use the last stable version of k8s.
 
 ## Platform
 
@@ -29,15 +28,17 @@ Normally we will use the last stable version of k8s.
 
 ## Prerequisites
 
-1. Docker
-2. VirtualBox
+Please manually install these dependencies before run miniark.
+
+1. [Docker](https://www.docker.com/products/docker-desktop)
+2. [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
 
 
 ## Install
 
 ### Download binary 
 
-1. Follow the [URL]([https://minio.longguikeji.com/ark/v1.0/miniark-osx](https://github.com/rockl2e/miniark/releases/download/v1.0.0/miniark)) to download the `miniark` binary
+1. Follow the [URL](https://github.com/rockl2e/miniark/releases/download/v1.0.0/miniark) to download the `miniark` binary
 2. `chmod +x miniark`
 3. move the `miniark` binary to your PATH and rename to `miniark`
 
@@ -45,19 +46,17 @@ We support both online and offline installation.
 
 ### Online Installation
 
-`miniark`
-
-This command will download and install the kubernetes environment automatically.
+Run `miniark` directly, it will download and install the kubernetes environment automatically.
 
 
-### Offline Installation
+### Offline Installation(Recommended)
 
-1. Download the pre-packed files, click link [URL](https://minio.longguikeji.com/ark/v1.0/miniark-offline.tar.gz)
-2. You can execute command `tar zxvf miniark-offline.tar.gz -C ~/` to extract the files to `$HOME/.miniark`
-3. Run `miniark`, everything should works fine now.
+1. Download the pre-packed files, click link here [URL](https://minio.longguikeji.com/ark/v1.0/miniark-offline.tar.gz)
+2. Execute command `tar zxvf miniark-offline.tar.gz -C ~/` to extract files to `$HOME/.miniark`
+3. Run `miniark`, everything should works fine now in a minute.
 
 
 ## Warning
 
-Due to the feature of offline installation, we make a modified minikube, you can checkout the [commit](https://github.com/RockLi/minikube/commit/06856df3a8a8af8a0893abc5fb9375bd770bfd74). 
+Since we need the offline installation feature, we made a modified minikube, you can checkout the [commit](https://github.com/RockLi/minikube/commit/06856df3a8a8af8a0893abc5fb9375bd770bfd74) in case you have security concerns.
 
